@@ -1,11 +1,7 @@
 use cyberdrop_dl::arg::parse_args;
-use cyberdrop_dl::{download_album, download_albums};
-use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
-use std::convert::TryInto;
+use cyberdrop_dl::download_albums;
 use std::error::Error;
-use std::sync::Arc;
-use tokio::time::{sleep, Duration};
-mod arg;
+pub mod arg;
 
 const HELP: &str = r#"Usage:
 cyberdrop-dl https://cyberdrop.me/a/album1
@@ -22,12 +18,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
         std::process::exit(1);
     }
     println!("Albums to download: {}", albums.len());
-    //    let idx := 0;
 
     let job = tokio::spawn(async move {
         let _ = download_albums(albums).await;
     });
-    tokio::join!(job);
+    let _ = tokio::join!(job);
     println!("Done!");
     Ok(())
 }
