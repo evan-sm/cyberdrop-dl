@@ -57,8 +57,8 @@ pub async fn download_albums(albums: Vec<String>) -> Result<(), Box<dyn Error>> 
         let pb = pb_main.clone();
         let c = client.clone();
         handles.push(tokio::spawn(async move {
-            let _ = sem_clone.acquire().await.unwrap();
-            let _ = download_album(c, pb, mb, a.to_string()).await;
+            let _permit = sem_clone.acquire().await.unwrap();
+            download_album(c, pb, mb, a.to_string()).await;
         }));
     }
     for h in handles {
@@ -95,7 +95,7 @@ pub async fn download_album(
         let client = client.clone();
         let tx2 = tx.clone();
         tokio::spawn(async move {
-            let _ = sem_clone.acquire().await.unwrap(); // Wait for free slot
+            let _permit = sem_clone.acquire().await.unwrap(); // Wait for free slot
             let (name, path, size, data) = download_image(&dir, &i, &client).await.unwrap();
             let img = Image::Image {
                 name: name.to_string(),
@@ -124,7 +124,7 @@ pub async fn download_album(
                     dest.push_str(&fname);
                     let mut reader: &[u8] = &data;
                     let mut file = File::create(&dest).await.unwrap();
-                    let _ = io::copy(&mut reader, &mut file).await.unwrap();
+                    io::copy(&mut reader, &mut file).await.unwrap();
                     let new = min(downloaded + size, total_size);
                     downloaded = new;
                     pb2.set_position(new.try_into().unwrap());

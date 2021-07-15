@@ -1,6 +1,6 @@
 [package]
 name = "cyberdrop-dl"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["wmw <github.com/wmw9>"]
 edition = "2018"
 description = "Cyberdrop.me album downloader written in Rust"
