@@ -1,7 +1,7 @@
-## cyberdrop-dl - cyberdrop.me Downloader written in Rust 🦀
-![cyberdrop-dl_demo](https://user-images.githubusercontent.com/4693125/124804507-0e52dd00-df63-11eb-887c-65c8da36ed53.gif)
+# 📦🌏 cyberdrop-dl - cyberdrop.me Downloader written in Rust 🦀
+![cyberdrop-dl_demo](https://user-images.githubusercontent.com/4693125/125909983-6306d4e3-e377-41f4-aaf6-f03134203613.gif)
 
-The fastest https://cyberdrop.me album downloader there is, written in Rust as an exercise.
+ > The fastest https://cyberdrop.me album downloader there is, written in Rust as an exercise.
 
 ### Usage
 
@@ -28,7 +28,7 @@ It's that simple
 $ cargo install cyberdrop-dl
 ```
 
-## Docker one-liner
+## Docker
 
 No need to build and install via Docker
 
@@ -41,4 +41,13 @@ $ docker run -it --rm -v "$(pwd)"/cyberdrop-dl:/cyberdrop-dl:rw wmw9/cyberdrop-d
 - [ ] Accept list of albums.txt via remote URL
 - [ ] Custom destination directory via -o flag
 - [ ] Integrate with Telegram Bot for easier usage
+- [ ] Detect dublicate albums
 
+# What I Learned 🧠
+- Tokio runtime (using channels, green threads, Arc<>, Semaphore limits)
+- HTML scraping
+- Terminal UI (multiple progress bars, spinners)
+- Async/Await
+- Async I/O
+- Working with filesystem
+- Rust basics (HTTP requests, args parsing, error handling)
