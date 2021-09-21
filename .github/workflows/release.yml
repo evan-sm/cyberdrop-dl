@@ -1,0 +1,98 @@
+# .github/workflows/release.yml
+name: release
+on: 
+  release:
+    types:
+      - created
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          default: true
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --release --all
+      - name: Post
+        run: |
+          strip target/release/cyberdrop-dl && chmod +x target/release/cyberdrop-dl && mv target/release/cyberdrop-dl .
+          tar cvf ./cyberdrop-dl_linux_amd64.tar ./cyberdrop-dl
+          zip ./cyberdrop-dl_linux_amd64.zip ./cyberdrop-dl
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ./cyberdrop-dl_linux_amd64.tar
+            ./cyberdrop-dl_linux_amd64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-win:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          default: true
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --release --all
+      - name: Post
+        run: |
+          cd ./target/release/ && 7z a -tzip -mx=0 ../../cyberdrop-dl_windows.zip ./cyberdrop-dl.exe
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ./cyberdrop-dl_windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: x86_64-apple-darwin
+          default: true
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --release --all
+      - name: Post
+        run: |
+          strip target/release/cyberdrop-dl && chmod +x target/release/cyberdrop-dl && mv target/release/cyberdrop-dl .
+          tar cvf ./cyberdrop-dl_apple-darwin.tar ./cyberdrop-dl
+          zip ./cyberdrop-dl_apple-darwin.zip ./cyberdrop-dl
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ./cyberdrop-dl_apple-darwin.tar
+            ./cyberdrop-dl_apple-darwin.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
