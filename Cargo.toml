@@ -22,5 +22,6 @@ indicatif = "0.16.2"
 url = "2.2.2"
 bytes = "1.0.1"
 futures = "0.3.15"
+openssl = { version = "0.10", features = ["vendored"] }
 [dev-dependencies]
 tokio-test = "0.4.2"
