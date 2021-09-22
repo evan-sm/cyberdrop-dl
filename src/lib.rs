@@ -13,7 +13,7 @@ use tokio::sync::mpsc;
 use tokio::sync::Semaphore;
 pub mod arg;
 
-const DOWNLOAD_FOLDER: &str = "./cyberdrop-dl"; // Folder to place all your downloaded albums. Warning: If files already exist they're being overwritten by default
+const DOWNLOAD_FOLDER: &str = "./cyberdrop.me"; // Folder to place all your downloaded albums. Warning: If files already exist they're being overwritten by default
 const H1: &str = "h1#title";
 const TABLE: &str = "#table :nth-child(1) > span > a[href]";
 const SIZE: &str = "body > section > div > nav > div:nth-child(2) > div > p.title";
