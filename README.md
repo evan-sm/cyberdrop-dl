@@ -44,7 +44,7 @@ $ docker run -it --rm -v "$(pwd)"/cyberdrop-dl:/cyberdrop-dl:rw wmw9/cyberdrop-d
 - [ ] Detect dublicate albums
 
 # What I Learned 🧠
-- Tokio runtime (using channels, green threads, Arc<>, Semaphore limits)
+- Tokio runtime (using channels, green threads, Arc<>, Semaphore)
 - HTML scraping
 - Terminal UI (multiple progress bars, spinners)
 - Async/Await
