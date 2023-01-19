@@ -48,7 +48,11 @@ pub async fn download_albums(albums: Vec<String>) -> Result<(), Box<dyn Error>> 
         tokio::task::spawn_blocking(move || multibar.join())
     };
 
-    let client = Arc::new(reqwest::Client::builder().build()?); // Use one client for all requests
+    let client = Arc::new(
+        reqwest::Client::builder()
+            .danger_accept_invalid_certs(true)
+            .build()?,
+    ); // Use one client for all requests
     let sem = Arc::new(Semaphore::new(ALBUM_BATCH_SIZE)); // Limit concurrent tasks
 
     for a in albums {
